@@ -1,16 +1,25 @@
 name: Validate launcher
 on:
   workflow_call:
+    inputs:
+      ref:
+        description: Git ref or commit SHA to validate
+        required: false
+        type: string
   push:
   pull_request:
   workflow_dispatch:
+
 permissions:
   contents: read
+
 jobs:
   linux-validation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
       - name: Install validation tools
         run: |
           sudo apt-get update
