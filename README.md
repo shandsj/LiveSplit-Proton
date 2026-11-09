@@ -1,0 +1,150 @@
+<h1 align="center">
+  <br>
+  <img src="resources/soulsplitter.png" width="350"/><br>
+  SoulSplitter
+  <br>
+</h1>
+
+<h4 align="center">A livesplit plugin for souls-games</h4>
+
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="docs/PROTON.md">Linux / Proton</a> •
+  <a href="https://github.com/FrankvdStam/SoulSplitter/wiki">Wiki</a> •
+  <a href="#Contact">Contact</a> •
+  <a href="#credits">Credits</a> •
+  <a href="https://github.com/FrankvdStam/SoulSplitter/blob/main/LICENSE">License</a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/FrankvdStam/SoulSplitter/actions">
+        <img src="https://img.shields.io/github/actions/workflow/status/FrankvdStam/SoulSplitter/build.yml?branch=main"/>
+    </a>   
+    <a href="https://www.nuget.org/packages/SoulMemory/">
+        <img src="https://img.shields.io/nuget/v/SoulMemory"/>
+    </a>
+    <a href="https://discord.gg/CEuyqQrrmP">
+        <img src="https://img.shields.io/discord/1359073517840105603"/>
+    </a>
+    <a href="https://www.youtube.com/@1wasted">
+        <img src="https://img.shields.io/badge/-YouTube-red"/>
+    </a>
+    <a href="https://ko-fi.com/wasted1">
+        <img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg"/>
+    </a>
+    <br/>
+    <a href="https://sonarqube.wastedcloud.nl">
+        <img src="https://sonarqube.wastedcloud.nl/api/project_badges/measure?project=FrankvdStam_SoulSplitter_AYT9tJW7QlZ0fhD27xsa&metric=alert_status&token=dcf5066558434982e851acb72b72235195d99b6e">
+    </a>
+    <a href="https://sonarqube.wastedcloud.nl">
+        <img src="https://sonarqube.wastedcloud.nl/api/project_badges/measure?project=FrankvdStam_SoulSplitter_AYT9tJW7QlZ0fhD27xsa&metric=coverage&token=dcf5066558434982e851acb72b72235195d99b6e">
+    </a>
+</p>
+
+
+# Features
+
+- Official timer for
+    - Dark Souls 1
+    - Dark Souls 3
+    - Elden Ring
+    - Sekiro: Shadows Die Twice
+    - Armored Core 6
+- Blackscreens/loadingscreen time is removed in
+    - Dark Souls 3
+    - Elden Ring
+    - Sekiro: Shadows Die Twice
+- Comes with a built-in event flag logger for all the games (use this to find flags to autosplit on, more info [here](https://github.com/FrankvdStam/SoulSplitter/wiki/Eventflags))
+- Event flag tracker (for 100% completion style runs, or maybe all bosses in Elden Ring)
+- Game memory reading functionality available as a standalone library on [![NuGet version (SoulMemory)](https://img.shields.io/nuget/v/SoulMemory)](https://www.nuget.org/packages/SoulMemory/), it has it's own [readme](./src/SoulMemory/README.md)
+
+Easily configure automatic splitting based on the in-game route you are running. Pick from a variety of timings and in-game events and share your setup with friends (setup is stored in the livesplit .lss files)
+  
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/37239092/214152219-433b1ea3-8d25-4800-9780-664c4af975ec.png"/>
+</p>
+<br/>
+
+Easily track arbitrary event flags for 100% style runs, or all bosses in Elden Ring. Background colors and fontsize can be adjusted to be OBS/stream overlay friendly.
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/37239092/214557544-2abeb450-beaa-4c93-8e46-38dd079c2731.png">
+</p>
+
+
+
+# Installation
+
+Install [LiveSplit](https://github.com/LiveSplit/LiveSplit), enter the name of the souls-game you want to run and click "activate" - this will download and install everything for you. Click on "settings" to the right of it to configure it.
+
+
+Linux users running games through Steam Proton can use the experimental setup documented in [Linux / Steam Proton](docs/PROTON.md). This runs the Windows LiveSplit application inside the game's Proton environment; it is not a native Linux port.
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/37239092/214122849-99988bb0-6204-4348-94dc-333fc38c61f0.png"/>
+</p>
+<br/>
+
+Don't forget to set livesplit to compare against game time  
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/37239092/214124915-bdfdee84-4eb1-40e4-ba23-8f837e708917.png"/>
+</p>
+
+# Contact
+
+Make sure to checkout the [troubleshooting](https://github.com/FrankvdStam/SoulSplitter/wiki/troubleshooting) page before you contact me. Also check out the [soulsspeedruns wiki pages](https://soulsspeedruns.com/livesplit/#troubleshooting) If you get stuck, you can find me in the [soulsSpeedruns discord]([https://discord.gg/d8wsAPMN](https://discord.gg/ugH6VFEj)), [sekrio speedrunning discord](https://discord.gg/m7JNdmtw) or the [Armored Core Speedrun discord](https://discord.gg/yKEDgcMw), ping @wasted in any of the help channels, or DM [wasted#2747](https://discord.com/users/281116269921566721) directly with your questions.
+
+If you find a bug you can let me know via the above methods, or you can [submit a github issue](https://github.com/FrankvdStam/SoulSplitter/issues/new).
+
+# Credits
+
+This repository is based on the collective work an efforts of the [soulsmodding](http://soulsmodding.wikidot.com/) community. Without the resources, intelligence and tools provided by this community, this repository would not exist.
+
+- Special thanks to [B3LYP](https://github.com/pawREP), for his many contributions to the speedrunning community
+    - writing the initial MIGT code injection for Elden Ring
+    - writing the original Sekiro plugin, which features have been included
+    - OG ds3 plugin, together with [Jiiks](https://github.com/Jiiks/)
+- Thanks Pav, for the Elden Ring cheat engine table
+- Thanks [Johndisandonato](https://github.com/veeenu), pretty much always willing to exhange some ideas about tech stuff
+- Thanks [vswarte](https://github.com/vswarte), soundboarding ideas, borrowing a lot of technical knowledge from these games
+- [Yapped](https://github.com/vawser/Yapped-Rune-Bear) helped speed up mapping event flags to bosses and graces
+- Uses the excellent [material design](https://materialdesigninxaml.net/) library by James Willock
+- Thanks [Nordgaren](https://github.com/Nordgaren/) for soundboarding
+- Thanks thefifthmatt for all the hard work on figuring out how the [ER map system](http://soulsmodding.wikidot.com/reference:elden-ring-map-list) works, insane effort!
+- Thanks [CapitaineToinon](https://github.com/CapitaineToinon/LiveSplit.DarkSoulsIGT) for letting me use his DS1 timer code + inventory index reset code!
+- Thanks [Blade](https://github.com/bladecoding/DarkSouls3RemoveIntroScreens) for the nologo code!
+- Thanks [Uberhalit](https://github.com/uberhalit) for the [Sekiro savefile mod](https://github.com/uberhalit/SimpleSekiroSavegameHelper) from his tool
+- Thanks [ViRazY](https://github.com/Vinjul1704) for the standalone CLI timer and many other contributions  
+- Thanks [Ducksual](https://www.twitch.tv/ducksual) for helping with DS1 dropmod
+- Thanks [AinTunez](https://github.com/AinTunez), for DarkScript3, deciphering emevd event scripts: https://github.com/AinTunez/DarkScript3 - this is the basis for building the EMEVD logger  
+- Thanks to many different people (including [vawser](https://github.com/vawser)) from the [soulsmodding](http://soulsmodding.wikidot.com/) community for DSMapStudio and all its variations, including [DSMapStudio](https://github.com/soulsmods/DSMapStudio) and [Smithbox](https://github.com/vawser/Smithbox)  
+- Thanks to many different people (including [JKAnderson](https://github.com/JKAnderson/)) from the [soulsmodding](http://soulsmodding.wikidot.com/) community for SoulsFormats and all its variations, including [SoulsFormatsNEXT](https://github.com/soulsmods/SoulsFormatsNEXT)  
+
+Thank you strimmers, for risking your PB's, to test my broken code!  
+- [Catalystz](https://www.twitch.tv/catalystz)  
+- [Johndisandonato](https://www.twitch.tv/johndisandonato)  
+- [Holm](https://www.twitch.tv/holm_gg)  
+- [Pennek](https://www.twitch.tv/pennek)  
+- [Nyk_style](https://www.twitch.tv/nyk_style)  
+- [Maarionete](https://www.twitch.tv/maarionete)  
+- [Moochyy](https://www.twitch.tv/moochyy_)  
+- [KEMIST](https://www.twitch.tv/kemist_c10h15n)  
+- [Ramonchi_5](https://www.twitch.tv/ramonchi_5)  
+
+<br/><br/>
+Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/)
+  
+<p align="left">
+    <img src="resources/signpath_logo.svg" width="300"/>
+</p>
+  
+I use a self hosted free opensource sonarqube instance to ensure code quality
+  
+</p>
+    <img src="https://github.com/devicons/devicon/blob/master/icons/sonarqube/sonarqube-plain-wordmark.svg" title="sonarqube" alt="sonarqube" width="300"/>
+</p>
+
+<br/><br/>
+Check out this [visualization of the git history](https://www.youtube.com/watch?v=2u7MwySLOUE), made with [Gource](https://gource.io/)
