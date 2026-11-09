@@ -70,6 +70,14 @@ The launcher reads `WINELOADER` from the selected process, or falls back to `PRO
 
 Confirm that LiveSplit was started through this launcher after the game was already running. Starting LiveSplit with a separate Wine/Proton invocation may create a second Wine server. This launcher does not add game support to components; game-specific memory support remains the responsibility of each component.
 
+## Releasing
+
+The next version is stored in `release-version.txt` as `MAJOR.MINOR.PATCH` (for example, `0.1.0`, without the leading `v`). Committing a change to that file on `main` starts the release workflow.
+
+The workflow validates the selected source commit, creates an annotated `vX.Y.Z` tag when needed, packages the launcher files, and creates or updates the matching GitHub Release. When a tag already exists, its tagged commit is validated and reused. An existing release keeps its notes and prerelease setting while the ZIP asset is added or replaced.
+
+Always increment the version for new code. Published tags are not moved to different commits.
+
 ## License
 
 This launcher is distributed under the GNU General Public License v3.0. See [LICENSE](LICENSE).
