@@ -27,7 +27,7 @@ jobs:
         run: |
           test_root="$(mktemp -d)"
           test_home="$test_root/home"
-          project_dir="$test_root/LiveSplit Proton \\$Test"
+          project_dir="$test_root/LiveSplit Proton Test"
           mkdir -p "$test_home/Games" "$project_dir"
           touch "$test_home/Games/LiveSplit.exe"
           cp livesplit-proton-launcher.sh setup-desktop-entry.sh "$project_dir/"

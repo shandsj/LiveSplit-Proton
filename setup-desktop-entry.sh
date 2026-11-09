@@ -18,7 +18,7 @@ while (($#)); do
 done
 [[ -n "$LIVE" && -f "$LIVE" ]] || { printf 'Provide a valid LiveSplit.exe path.\n' >&2; exit 1; }
 LIVE="$(realpath -e -- "$LIVE")"
-quote_exec(){ local s="$1"; s="${s//\\/\\\\}"; s="${s//\"/\\\"}"; s="${s//\$/\\\\\$}"; s="${s//\`/\\\`}"; printf '"%s"' "$s"; }
+quote_exec(){ local s="$1"; s="${s//\\/\\\\}"; s="${s//\"/\\\"}"; printf '"%s"' "$s"; }
 mkdir -p "$CONFIG_DIR" "$APP_DIR"
 chmod 700 "$CONFIG_DIR"
 printf '%s\n' "$LIVE" > "$CONFIG.tmp"
