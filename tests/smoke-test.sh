@@ -12,7 +12,10 @@ cat > "$TMP/bin/sudo" <<'MOCK'
 printf '<%s>\n' "$@" >> "$TEST_LOG"
 MOCK
 chmod +x "$TMP/bin/sudo"
-export WINEPREFIX="$TMP/pfx" WINELOADER="$(type -P true)" TEST_LOG="$TMP/log"
+WINEPREFIX="$TMP/pfx"
+WINELOADER="$(type -P true)"
+TEST_LOG="$TMP/log"
+export WINEPREFIX WINELOADER TEST_LOG
 bash -c 'exec -a /tmp/LiveSplitProtonTest.exe sleep 60' >/dev/null 2>&1 &
 PID=$!
 sleep .2
