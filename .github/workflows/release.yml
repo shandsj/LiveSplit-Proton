@@ -2,38 +2,121 @@ name: Release launcher
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
+    paths:
+      - release-version.txt
 
 permissions:
   contents: write
 
-jobs:
-  validate:
-    uses: ./.github/workflows/validate.yml
+concurrency:
+  group: livesplit-proton-release
+  cancel-in-progress: false
 
-  release:
-    needs: validate
+jobs:
+  prepare:
+    name: Resolve release version and source
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+      source_sha: ${{ steps.release.outputs.source_sha }}
+      create_tag: ${{ steps.release.outputs.create_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve version and source commit
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          VERSION="$(tr -d '[:space:]' < release-version.txt)"
+          if [[ ! "$VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo "::error::release-version.txt must contain a plain MAJOR.MINOR.PATCH version, such as 0.1.0."
+            exit 1
+          fi
+
+          TAG="v$VERSION"
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            git fetch --force origin "refs/tags/$TAG:refs/tags/$TAG"
+            SOURCE_SHA="$(git rev-parse "$TAG^{commit}")"
+            CREATE_TAG=false
+            echo "Reusing existing $TAG at $SOURCE_SHA."
+          else
+            SOURCE_SHA="$GITHUB_SHA"
+            CREATE_TAG=true
+            echo "A new $TAG will point to $SOURCE_SHA."
+          fi
+
+          {
+            echo "tag=$TAG"
+            echo "source_sha=$SOURCE_SHA"
+            echo "create_tag=$CREATE_TAG"
+          } >> "$GITHUB_OUTPUT"
+
+  validate:
+    name: Validate release source
+    needs: prepare
+    uses: ./.github/workflows/validate.yml
+    with:
+      ref: ${{ needs.prepare.outputs.source_sha }}
+
+  publish:
     name: Package and publish launcher
+    needs:
+      - prepare
+      - validate
     runs-on: ubuntu-latest
     steps:
-      - name: Check out source
+      - name: Check out release source
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.source_sha }}
+          fetch-depth: 0
+
+      - name: Create release tag when needed
+        if: needs.prepare.outputs.create_tag == 'true'
+        env:
+          TAG: ${{ needs.prepare.outputs.tag }}
+          SOURCE_SHA: ${{ needs.prepare.outputs.source_sha }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" "$SOURCE_SHA" -m "LiveSplit-Proton $TAG"
+          git push origin "refs/tags/$TAG"
 
       - name: Package release
+        env:
+          TAG: ${{ needs.prepare.outputs.tag }}
         run: |
-          mkdir release
+          set -euo pipefail
+          mkdir -p release
           cp README.md LICENSE livesplit-proton-launcher.sh setup-desktop-entry.sh release/
           chmod +x release/livesplit-proton-launcher.sh release/setup-desktop-entry.sh
-          cd release
-          zip -9 "../LiveSplit-Proton-${GITHUB_REF_NAME}.zip" \
-            README.md LICENSE livesplit-proton-launcher.sh setup-desktop-entry.sh
+          (
+            cd release
+            zip -9 "../LiveSplit-Proton-${TAG}.zip" \
+              README.md LICENSE livesplit-proton-launcher.sh setup-desktop-entry.sh
+          )
+          unzip -t "LiveSplit-Proton-${TAG}.zip"
 
-      - name: Publish GitHub Release
+      - name: Publish or update GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.prepare.outputs.tag }}
         run: |
-          gh release create "$GITHUB_REF_NAME" \
-            "LiveSplit-Proton-${GITHUB_REF_NAME}.zip" \
-            --title "LiveSplit-Proton $GITHUB_REF_NAME" \
-            --generate-notes
+          set -euo pipefail
+          ASSET="LiveSplit-Proton-${TAG}.zip"
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ASSET" --clobber
+          else
+            gh release create "$TAG" "$ASSET" \
+              --title "LiveSplit-Proton $TAG" \
+              --generate-notes \
+              --verify-tag
+          fi
