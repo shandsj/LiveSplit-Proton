@@ -22,3 +22,16 @@ jobs:
           shellcheck --severity=warning livesplit-proton-launcher.sh setup-desktop-entry.sh tests/smoke-test.sh
       - name: Smoke test process selection and namespace command
         run: bash tests/smoke-test.sh
+
+      - name: Validate generated desktop entry
+        run: |
+          test_root="$(mktemp -d)"
+          test_home="$test_root/home"
+          project_dir="$test_root/LiveSplit Proton \\$Test"
+          mkdir -p "$test_home/Games" "$project_dir"
+          touch "$test_home/Games/LiveSplit.exe"
+          cp livesplit-proton-launcher.sh setup-desktop-entry.sh "$project_dir/"
+          chmod +x "$project_dir"/*.sh
+          HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" XDG_DATA_HOME="$test_home/.local/share" \
+            bash "$project_dir/setup-desktop-entry.sh" --livesplit "$test_home/Games/LiveSplit.exe"
+          desktop-file-validate "$test_home/.local/share/applications/livesplit-proton.desktop"
